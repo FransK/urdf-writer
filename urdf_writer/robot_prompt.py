@@ -97,3 +97,11 @@ def save_robot_description_to_file(robot_description, filename):
     with open(filename, "w") as f:
         json.dump(robot_description, f, indent=4)
     print(f"Robot description saved to: {filename}")
+
+if __name__ == "__main__":
+    # Generate the robot description
+    robot_description = prompt_for_robot_description()
+    
+    # Save the description to a file
+    output_file = input("Enter the output file name (e.g., robot_description.json): ")
+    save_robot_description_to_file(robot_description, output_file)
