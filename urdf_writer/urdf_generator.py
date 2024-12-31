@@ -32,6 +32,15 @@ class URDFGenerator:
                 elif geometry["type"] == "cylinder":
                     urdf += f'        <cylinder length="{geometry["length"]}" radius="{geometry["radius"]}" />\n'
                 urdf += f'      </geometry>\n'
+
+                # Handle origin
+                origin = visual.get("origin", {})
+                xyz = origin.get("xyz", None)
+                rpy = origin.get("rpy", None)
+                if rpy:
+                    urdf += f'      <origin rpy="{rpy}" xyz="{xyz}" />\n'
+                elif xyz:
+                    urdf += f'      <origin xyz="{xyz}" />\n'
                 
                 # Handle material
                 material = visual.get("material", {})

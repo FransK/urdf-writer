@@ -186,3 +186,52 @@ class TestURDFGenerator(unittest.TestCase):
             '</robot>'
         )
         self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
+
+    def test_generate_urdf_with_visual_and_origin(self):
+        urdfg = URDFGenerator()
+        robot_description = {
+            "name": "test_robot",
+            "materials": [
+                {
+                    "name": "red",
+                    "color": "1 0 0 1",
+                }
+            ],
+            "links": [
+                {
+                    "name": "base_link",
+                    "visual": {
+                        "geometry": {
+                            "type": "cylinder",
+                            "radius": "0.5",
+                            "length": "2.0",
+                        },
+                        "material": {
+                            "name": "red",
+                        },
+                        "origin": {
+                            "xyz": "1 2 3",
+                            "rpy": "0.1 0.2 0.3"
+                        }
+                    }
+                }
+            ]
+        }
+        expected_output = (
+            '<?xml version="1.0" ?>\n'
+            '<robot name="test_robot">\n'
+            '  <material name="red" >\n'
+            '    <color rgba="1 0 0 1" />\n'
+            '  </material>\n'
+            '  <link name="base_link">\n'
+            '    <visual>\n'
+            '      <geometry>\n'
+            '        <cylinder length="2.0" radius="0.5" />\n'
+            '      </geometry>\n'
+            '      <origin rpy="0.1 0.2 0.3" xyz="1 2 3" />\n'
+            '      <material name="red" />\n'
+            '    </visual>\n'
+            '  </link>\n'
+            '</robot>'
+        )
+        self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
