@@ -64,6 +64,9 @@ class TestURDFCLIIntegration(unittest.TestCase):
                 self.assertIn(f'<geometry>', urdf_content)
                 self.assertIn(f'<cylinder length="2.0" radius="0.5" />', urdf_content)
                 self.assertIn(f'<material name="red" />', urdf_content)
+                self.assertIn(f'<origin rpy="0.1 0.2 0.3" xyz="1 2 3" />', urdf_content)
+                self.assertIn(f'<joint name="joint1" type="revolute">', urdf_content)
+                self.assertIn(f'<parent link="base_link" />', urdf_content)
 
         finally:
             # Clean up temporary files
