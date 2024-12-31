@@ -5,7 +5,7 @@ def prompt_for_robot_description():
     robot_name = input("Enter the robot name: ")
 
     # Initialize the robot description dictionary
-    robot_description = {"name": robot_name, "materials": [], "links": []}
+    robot_description = {"name": robot_name, "materials": [], "links": [], "joints": []}
 
     # Ask for the number of materials
     num_materials = int(input("How many materials does the robot have? "))
@@ -67,6 +67,28 @@ def prompt_for_robot_description():
 
         # Add the link to the robot description
         robot_description["links"].append(link)
+
+    # Ask for number of joints
+    num_joints = int(input("How many joints does the robot have? "))
+
+    for i in range(num_joints):
+        joint_name = input(f"Enter the name of joint {i + 1}: ")
+        joint_type = input(f"Enter the type of joint {joint_name} (revolute, continuous, prismatic, fixed, floating, planar): ")
+        parent_link = input(f"Enter the parent link for {joint_name}: ")
+        child_link = input(f"Enter the child link for {joint_name}: ")
+        origin_xyz = input(f"Enter the origin XYZ for {joint_name} (format: x y z): ")
+
+        # Initialize the joint dictionary
+        joint = {
+            "name": joint_name,
+            "type": joint_type,
+            "parent": parent_link,
+            "child": child_link,
+            "origin": {"xyz": origin_xyz}
+        }
+
+        # Add the joint to the robot description
+        robot_description["joints"].append(joint)
 
     # Return the generated robot description
     return robot_description

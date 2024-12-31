@@ -21,7 +21,13 @@ class TestRobotPrompt(unittest.TestCase):
             "2.0",        # Cylinder length
             "red",        # Material name
             "1 2 3",      # Origin xyz
-            "0.1 0.2 0.3" # Origin rpy
+            "0.1 0.2 0.3",# Origin rpy
+            "1",          # Number of joints
+            "joint1",     # Joint name
+            "revolute",   # Joint type
+            "base_link",  # Parent link
+            "child_link", # Child link
+            "1 2 3",      # Origin xyz
         ]
 
         # Call the function to prompt for robot description
@@ -54,7 +60,18 @@ class TestRobotPrompt(unittest.TestCase):
                         }
                     }
                 }
-            ]
+            ],
+            "joints": [
+                {
+                    "name": "joint1",
+                    "type": "revolute",
+                    "parent": "base_link",
+                    "child": "child_link",
+                    "origin": {
+                        "xyz": "1 2 3"
+                    }
+                }
+            ],
         }
 
         self.assertEqual(robot_description, expected_description)
@@ -74,7 +91,13 @@ class TestRobotPrompt(unittest.TestCase):
             "2.0",        # Cylinder length
             "red",        # Material name
             "1 2 3",      # Origin xyz
-            "0.1 0.2 0.3" # Origin rpy
+            "0.1 0.2 0.3",# Origin rpy
+            "1",          # Number of joints
+            "joint1",     # Joint name
+            "revolute",   # Joint type
+            "base_link",  # Parent link
+            "child_link", # Child link
+            "1 2 3",      # Origin xyz
         ]
 
         robot_description = prompt_for_robot_description()

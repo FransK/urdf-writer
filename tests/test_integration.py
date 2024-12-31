@@ -23,7 +23,13 @@ class TestURDFCLIIntegration(unittest.TestCase):
             "2.0",        # Cylinder length
             "red",        # Material name
             "1 2 3",      # Origin xyz
-            "0.1 0.2 0.3" # Origin rpy
+            "0.1 0.2 0.3",# Origin rpy
+            "1",          # Number of joints
+            "joint1",     # Joint name
+            "revolute",   # Joint type
+            "base_link",  # Parent link
+            "child_link", # Child link
+            "1 2 3",      # Origin xyz
         ]
 
         # Generate the robot description using the prompt
