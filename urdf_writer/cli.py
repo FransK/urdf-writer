@@ -1,7 +1,7 @@
 import argparse
 import json
-from urdf_generator import URDFGenerator
-from robot_prompt import prompt_for_robot_description, save_robot_description_to_file
+from urdf_writer.urdf_generator import URDFGenerator
+from urdf_writer.robot_prompt import prompt_for_robot_description, save_robot_description_to_file
 
 def generate_urdf_from_file(input_file):
     with open(input_file, "r") as f:

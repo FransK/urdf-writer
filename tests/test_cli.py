@@ -45,7 +45,7 @@ class TestCLI(unittest.TestCase):
         try:
             # Run the CLI command
             result = subprocess.run(
-                ["python3", "urdf_writer/urdf_cli.py", temp_file_path],
+                ["python3", "-m", "urdf_writer.cli", temp_file_path],
                 capture_output=True,
                 text=True,
             )
@@ -89,7 +89,7 @@ class TestCLI(unittest.TestCase):
         try:
             # Run the CLI command
             result = subprocess.run(
-                ["python3", "urdf_writer/urdf_cli.py", temp_file_path, "--output", temp_output_file_path],
+                ["python3", "-m", "urdf_writer.cli", temp_file_path, "--output", temp_output_file_path],
                 capture_output=True,
                 text=True,
             )

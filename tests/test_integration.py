@@ -47,7 +47,7 @@ class TestURDFCLIIntegration(unittest.TestCase):
         try:
             # Run the URDF CLI with the generated JSON as input and specify the output file
             result = subprocess.run(
-                ["python3", "urdf_writer/urdf_cli.py", json_file_path, "--output", urdf_file_path],
+                ["python3", "-m", "urdf_writer.cli", json_file_path, "--output", urdf_file_path],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 text=True
