@@ -12,7 +12,8 @@ class TestURDFGenerator(unittest.TestCase):
         expected_output = (
             '<?xml version="1.0" ?>\n'
             '<robot name="test_robot">\n'
-            '  <link name="base_link" />\n'
+            '  <link name="base_link">\n'
+            '  </link>\n'
             '</robot>'
         )
         self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
@@ -34,8 +35,10 @@ class TestURDFGenerator(unittest.TestCase):
         expected_output = (
             '<?xml version="1.0" ?>\n'
             '<robot name="test_robot">\n'
-            '  <link name="base_link" />\n'
-            '  <link name="link1" />\n'
+            '  <link name="base_link">\n'
+            '  </link>\n'
+            '  <link name="link1">\n'
+            '  </link>\n'
             '  <joint name="joint1" type="revolute">\n'
             '    <parent link="base_link" />\n'
             '    <child link="link1" />\n'
@@ -62,8 +65,10 @@ class TestURDFGenerator(unittest.TestCase):
         expected_output = (
             '<?xml version="1.0" ?>\n'
             '<robot name="test_robot">\n'
-            '  <link name="base_link" />\n'
-            '  <link name="link1" />\n'
+            '  <link name="base_link">\n'
+            '  </link>\n'
+            '  <link name="link1">\n'
+            '  </link>\n'
             '  <joint name="joint1" type="fixed">\n'
             '    <parent link="base_link" />\n'
             '    <child link="link1" />\n'
@@ -94,3 +99,46 @@ class TestURDFGenerator(unittest.TestCase):
             str(context.exception),
             f'Unsupported joint type: \'unsupported\'. Supported types are: {URDFGenerator.SUPPORTED_JOINT_TYPES}'
         )
+
+    def test_generate_urdf_with_visuals(self):
+        urdfg = URDFGenerator()
+        robot_description = {
+            "name": "test_robot",
+            "materials": [
+                {
+                    "name": "blue",
+                    "color": "0 0 1 1",
+                }
+            ],
+            "links": [
+                {
+                    "name": "base_link",
+                    "visual": {
+                        "geometry": {
+                            "type": "box",
+                            "size": "1 1 1",
+                        },
+                        "material": {
+                            "name": "blue",
+                        },
+                    }
+                }
+            ],
+        }
+        expected_output = (
+            '<?xml version="1.0" ?>\n'
+            '<robot name="test_robot">\n'
+            '  <material name="blue" >\n'
+            '    <color rgba="0 0 1 1" />\n'
+            '  </material>\n'
+            '  <link name="base_link">\n'
+            '    <visual>\n'
+            '      <geometry>\n'
+            '        <box size="1 1 1" />\n'
+            '      </geometry>\n'
+            '      <material name="blue" />\n'
+            '    </visual>\n'
+            '  </link>\n'
+            '</robot>'
+        )
+        self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)

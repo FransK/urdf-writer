@@ -3,14 +3,40 @@ class URDFGenerator:
 
     def generate_urdf(self, robot_description):
         name = robot_description["name"]
+        materials = robot_description.get("materials", [])
         links = robot_description["links"]
-        joints = robot_description["joints"]
+        joints = robot_description.get("joints", [])
 
         urdf = f'<?xml version="1.0" ?>\n<robot name="{name}">\n'
 
+        # Add materials
+        for material in materials:
+            urdf += (
+                f'  <material name="{material["name"]}" >\n'
+                f'    <color rgba="{material["color"]}" />\n'
+                f'  </material>\n'
+            )
+
         # Add links
         for link in links:
-            urdf += f'  <link name="{link["name"]}" />\n'
+            urdf += f'  <link name="{link["name"]}">\n'
+            if "visual" in link:
+                visual = link["visual"]
+                urdf += f'    <visual>\n'
+
+                # Handle geometry
+                geometry = visual.get("geometry", {})
+                if geometry["type"] == "box":
+                    urdf += f'      <geometry>\n'
+                    urdf += f'        <box size="{geometry["size"]}" />\n'
+                    urdf += f'      </geometry>\n'
+                
+                # Handle material
+                material = visual.get("material", {})
+                urdf += f'      <material name="{material["name"]}" />\n'
+
+                urdf += f'    </visual>\n'
+            urdf += f'  </link>\n'
 
         # Add joints
         for joint in joints:
