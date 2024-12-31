@@ -5,7 +5,20 @@ def prompt_for_robot_description():
     robot_name = input("Enter the robot name: ")
 
     # Initialize the robot description dictionary
-    robot_description = {"name": robot_name, "links": []}
+    robot_description = {"name": robot_name, "materials": [], "links": []}
+
+    # Ask for the number of materials
+    num_materials = int(input("How many materials does the robot have? "))
+
+    for i in range(num_materials):
+        material_name = input(f"Enter the name of material {i + 1}: ")
+        color = input(f"Enter the color for {material_name} (format: R G B A): ")
+
+        # Initialize the material dictionary
+        material = {"name": material_name, "color": color}
+
+        # Add the material to the robot description
+        robot_description["materials"].append(material)
 
     # Ask for the number of links
     num_links = int(input("How many links does the robot have? "))
@@ -32,7 +45,7 @@ def prompt_for_robot_description():
             geometry["length"] = length
         elif geometry_type == "box":
             geometry["type"] = "box"
-            size = input("Enter the size of the box (x y z): ")
+            size = input("Enter the size of the box (format: x y z): ")
             if not size:
                 raise ValueError("Size is required for a box.")
             geometry["size"] = size
@@ -45,8 +58,7 @@ def prompt_for_robot_description():
 
         # Ask for material properties
         material_name = input(f"Enter the material name for {link_name}: ")
-        color = input(f"Enter the color for {material_name} (RGBA format): ")
-        link["visual"]["material"] = {"name": material_name, "color": color}
+        link["visual"]["material"] = {"name": material_name}
 
         # Ask for origin properties
         origin_xyz = input(f"Enter the origin XYZ for {link_name} (format: x y z): ")

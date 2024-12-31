@@ -11,13 +11,15 @@ class TestRobotPrompt(unittest.TestCase):
         # Simulate user input using mock
         mock_input.side_effect = [
             "TestRobot",  # Robot name
+            "1",          # Number of materials
+            "red",        # Material name
+            "1 0 0 1",    # Color (RGBA)
             "1",          # Number of links
             "base_link",  # Link name
             "cylinder",   # Geometry type
             "0.5",        # Cylinder radius
             "2.0",        # Cylinder length
             "red",        # Material name
-            "1 0 0 1",    # Color (RGBA)
             "1 2 3",      # Origin xyz
             "0.1 0.2 0.3" # Origin rpy
         ]
@@ -28,6 +30,12 @@ class TestRobotPrompt(unittest.TestCase):
         # Check if the robot description is correct
         expected_description = {
             "name": "TestRobot",
+            "materials": [
+                {
+                    "name": "red",
+                    "color": "1 0 0 1"
+                }
+            ],
             "links": [
                 {
                     "name": "base_link",
@@ -39,7 +47,6 @@ class TestRobotPrompt(unittest.TestCase):
                         },
                         "material": {
                             "name": "red",
-                            "color": "1 0 0 1"
                         },
                         "origin": {
                             "xyz": "1 2 3",
@@ -57,13 +64,15 @@ class TestRobotPrompt(unittest.TestCase):
         # Simulate user input
         mock_input.side_effect = [
             "TestRobot",  # Robot name
+            "1",          # Number of materials
+            "red",        # Material name
+            "1 0 0 1",    # Color (RGBA)
             "1",          # Number of links
             "base_link",  # Link name
             "cylinder",   # Geometry type
             "0.5",        # Cylinder radius
             "2.0",        # Cylinder length
             "red",        # Material name
-            "1 0 0 1",    # Color (RGBA)
             "1 2 3",      # Origin xyz
             "0.1 0.2 0.3" # Origin rpy
         ]
@@ -91,13 +100,13 @@ class TestRobotPrompt(unittest.TestCase):
         # Simulate missing input (e.g., geometry radius)
         mock_input.side_effect = [
             "TestRobot",  # Robot name
-            "1",          # Number of links
+            "1",          # Number of materials
+            "red",        # Material name
             "base_link",  # Link name
             "cylinder",   # Geometry type
-            "",           # Empty radius (invalid)
+            "0.5",        # Cylinder radius
             "2.0",        # Cylinder length
             "red",        # Material name
-            "1 0 0 1",    # Color (RGBA)
             "1 2 3",      # Origin xyz
             "0.1 0.2 0.3" # Origin rpy
         ]
