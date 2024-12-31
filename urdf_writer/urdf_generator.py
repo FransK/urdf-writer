@@ -1,4 +1,6 @@
 class URDFGenerator:
+    SUPPORTED_JOINT_TYPES = ["revolute", "continuous", "prismatic", "fixed", "floating", "planar"]
+
     def generate_urdf(self, robot_description):
         name = robot_description["name"]
         links = robot_description["links"]
@@ -12,6 +14,9 @@ class URDFGenerator:
 
         # Add joints
         for joint in joints:
+            if joint["type"] not in self.SUPPORTED_JOINT_TYPES:
+                raise ValueError(f'Unsupported joint type: \'{joint["type"]}\'. Supported types are: {self.SUPPORTED_JOINT_TYPES}')
+            
             urdf += f'  <joint name="{joint["name"]}" type="{joint["type"]}">\n'
             urdf += f'    <parent link="{joint["parent"]}" />\n'
             urdf += f'    <child link="{joint["child"]}" />\n'

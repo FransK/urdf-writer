@@ -72,3 +72,25 @@ class TestURDFGenerator(unittest.TestCase):
             '</robot>'
         )
         self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
+
+    def test_generate_urdf_joint_with_unsupported_type(self):
+        urdfg = URDFGenerator()
+        robot_description = {
+            "name": "test_robot",
+            "links": [{"name": "base_link"}, {"name": "link1"}],
+            "joints": [{
+                "name": "joint1",
+                "type": "unsupported",
+                "parent": "base_link",
+                "child": "link1",
+                "origin": {"rpy": "0 0 0", "xyz": "0 0 0"},
+                "axis": "0 0 1",
+            }]
+        }
+        with self.assertRaises(ValueError) as context:
+            urdfg.generate_urdf(robot_description)
+        
+        self.assertEqual(
+            str(context.exception),
+            f'Unsupported joint type: \'unsupported\'. Supported types are: {URDFGenerator.SUPPORTED_JOINT_TYPES}'
+        )
