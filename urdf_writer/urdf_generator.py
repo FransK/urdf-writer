@@ -26,10 +26,12 @@ class URDFGenerator:
 
                 # Handle geometry
                 geometry = visual.get("geometry", {})
+                urdf += f'      <geometry>\n'
                 if geometry["type"] == "box":
-                    urdf += f'      <geometry>\n'
                     urdf += f'        <box size="{geometry["size"]}" />\n'
-                    urdf += f'      </geometry>\n'
+                elif geometry["type"] == "cylinder":
+                    urdf += f'        <cylinder length="{geometry["length"]}" radius="{geometry["radius"]}" />\n'
+                urdf += f'      </geometry>\n'
                 
                 # Handle material
                 material = visual.get("material", {})
