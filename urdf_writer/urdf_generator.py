@@ -12,14 +12,24 @@ class URDFGenerator:
 
         # Add joints
         for joint in joints:
-            urdf += (
-                f'  <joint name="{joint["name"]}" type="{joint["type"]}">\n'
-                f'    <parent link="{joint["parent"]}" />\n'
-                f'    <child link="{joint["child"]}" />\n'
-                f'    <origin rpy="{joint["origin"]["rpy"]}" xyz="{joint["origin"]["xyz"]}" />\n'
-                f'    <axis xyz="{joint["axis"]}" />\n'
-                f'  </joint>\n'
-            )
+            urdf += f'  <joint name="{joint["name"]}" type="{joint["type"]}">\n'
+            urdf += f'    <parent link="{joint["parent"]}" />\n'
+            urdf += f'    <child link="{joint["child"]}" />\n'
+            
+            # Handle origin
+            origin = joint.get("origin", {})
+            xyz = origin.get("xyz", "0 0 0")
+            rpy = origin.get("rpy", None)
+            if rpy:
+                urdf += f'    <origin rpy="{rpy}" xyz="{xyz}" />\n'
+            else:
+                urdf += f'    <origin xyz="{xyz}" />\n'
+
+            # Handle axis
+            if "axis" in joint:
+                urdf += f'    <axis xyz="{joint["axis"]}" />\n'
+
+            urdf += f'  </joint>\n'
 
         urdf += '</robot>'
         return urdf

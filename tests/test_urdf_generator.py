@@ -45,3 +45,30 @@ class TestURDFGenerator(unittest.TestCase):
             '</robot>'
         )
         self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
+
+    def test_generate_urdf_joint_without_axis(self):
+        urdfg = URDFGenerator()
+        robot_description = {
+            "name": "test_robot",
+            "links": [{"name": "base_link"}, {"name": "link1"}],
+            "joints": [{
+                "name": "joint1",
+                "type": "fixed",
+                "parent": "base_link",
+                "child": "link1",
+                "origin": {"xyz": "1 0 0"}, # No "rpy" and no "axis"
+            }]
+        }
+        expected_output = (
+            '<?xml version="1.0" ?>\n'
+            '<robot name="test_robot">\n'
+            '  <link name="base_link" />\n'
+            '  <link name="link1" />\n'
+            '  <joint name="joint1" type="fixed">\n'
+            '    <parent link="base_link" />\n'
+            '    <child link="link1" />\n'
+            '    <origin xyz="1 0 0" />\n' # No "rpy" and no "axis" is fine
+            '  </joint>\n'
+            '</robot>'
+        )
+        self.assertEqual(urdfg.generate_urdf(robot_description), expected_output)
