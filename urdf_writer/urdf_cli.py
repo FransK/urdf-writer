@@ -1,6 +1,7 @@
 import argparse
 import json
 from urdf_generator import URDFGenerator
+from robot_prompt import prompt_for_robot_description, save_robot_description_to_file
 
 def generate_urdf_from_file(input_file):
     with open(input_file, "r") as f:
@@ -13,8 +14,16 @@ def main():
     parser = argparse.ArgumentParser(description="Generate URDF file from robot description JSON")
     parser.add_argument("input_file", help="Path to the robot description JSON file")
     parser.add_argument("--output", help="Path to save the generated URDF file", default=None)
+    parser.add_argument("--create", help="Create a new robot description JSON file", action="store_true")
 
     args = parser.parse_args()
+
+    if args.create:
+        # Prompt the user for the robot description and save it to a file
+        robot_description = prompt_for_robot_description()
+        output_filename = input("Enter the filename to save the robot descrition (e.g., robot_description.json): ")
+        save_robot_description_to_file(robot_description, output_filename)
+        return
 
     try:
         urdf_output = generate_urdf_from_file(args.input_file)
